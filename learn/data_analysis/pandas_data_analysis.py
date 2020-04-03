@@ -2,13 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as  np
 import pandas as pa
 
-import sql.mysql_utils as mu
-
-local_conn = mu.get_conn()
-
-from sqlalchemy import create_engine
-
-local_conn = create_engine('mysql+pymysql://root:root@localhost:3306/test?charset=utf8')
+# local_conn = mu.get_conn()
+# local_conn = create_engine('mysql+pymysql://root:root@localhost:3306/test?charset=utf8')
 
 # 显示所有列
 pa.set_option('display.max_columns', None)
@@ -19,35 +14,36 @@ path = r'C:\Users\AL\Desktop\test\text\text_data.csv'
 text_df = pa.read_csv(path)
 text_df.info()
 text_df.head()
-text_df.size
+text_df.shape
 text_df.count()
-text_df.info()
-use_clo = ['CONTENT', 'SEND_TIME', 'FROM_UID', 'TO_UID']
+temp_data = text_df.groupby('re_u').apply(lambda t: t[t.s_time == t.s_time.max()])
+temp_data.shape
 
-temp_data = text_df[text_df['FROM_UID'] == 4007]
+text_df.info()
+use_clo = ['send_text', 's_time', 's_u', 're_u']
+
+temp_data = text_df[text_df['s_u'] == 47]
 temp_data.size
 
-text_df.groupby('MESSAGE_TYPE').size()
+text_df.groupby('text_t').size()
 
-temp_data = text_df.groupby('FROM_UID').apply(lambda t: t[t.SEND_TIME == t.SEND_TIME.max()])
-
-temp_data = text_df[use_clo][text_df['FROM_UID'] == 4007].head(5)
+temp_data = text_df[use_clo][text_df['s_u'] == 47].head(5)
 temp_data.head()
-text_df[text_df['FROM_UID'] == 4007].head(5)
-temp_data = text_df[((text_df['FROM_UID'] == 4007) & (text_df['TO_UID'] == 4003)) | (
-			(text_df['FROM_UID'] == 4003) & (text_df['TO_UID'] == 4007))]
-temp_data = text_df[(text_df['FROM_UID'] == 4007) | (text_df['TO_UID'] == 4003)]
+text_df[text_df['s_u'] == 47].head(5)
+temp_data = text_df[((text_df['s_u'] == 47) & (text_df['re_u'] == 4003)) | (
+		(text_df['s_u'] == 4003) & (text_df['re_u'] == 47))]
+temp_data = text_df[(text_df['s_u'] == 47) | (text_df['re_u'] == 4003)]
 
-null_data = text_df[text_df['CONTENT'].isna()]
-not_null_data = text_df[text_df['CONTENT'].notna()]
+null_data = text_df[text_df['send_text'].isna()]
+not_null_data = text_df[text_df['send_text'].notna()]
 
-temp_data.groupby('MESSAGE_TYPE').size()
-temp_data.groupby('TO_UID').size()
-temp_data.groupby('MESSAGE_TYPE').count()
-temp_data.groupby('MESSAGE_TYPE')['MESSAGE_TYPE'].count()
-temp_data.groupby('MESSAGE_TYPE').agg({'SEND_TIME': np.mean, 'MESSAGE_TYPE': np.size})
+temp_data.groupby('text_t').size()
+temp_data.groupby('re_u').size()
+temp_data.groupby('text_t').count()
+temp_data.groupby('text_t')['text_t'].count()
+temp_data.groupby('text_t').agg({'s_time': np.mean, 'text_t': np.size})
 
-text_df.to_sql('text_data', con=local_conn, if_exists='replace')
+# text_df.to_sql('text_data', con=local_conn, if_exists='replace')
 
 df1 = pa.DataFrame({'key': ['A', 'B', 'C', 'D'],
                     'value': np.random.randn(4)})
@@ -59,7 +55,7 @@ pa.merge(df1, df2, on='key')
 pa.concat([df1, df2])
 pa.concat([df1, df2]).drop_duplicates()
 
-# temp_data.nlargest(10 + 1, columns='TO_UID').tail(10)
+# temp_data.nlargest(10 + 1, columns='re_u').tail(10)
 
 path_random = r'C:\Users\AL\Desktop\test\test.csv'
 test_data_df = pa.read_csv(path_random)
@@ -108,21 +104,21 @@ text_df = text_df.drop(['diff_date'], axis=1)
 
 
 # 把时间戳 转换 日期
-text_df['SEND_TIME'] = pa.to_datetime(text_df['SEND_TIME'], unit='s')
-# text_df['SEND_TIME'] = pa.to_timedelta(text_df['SEND_TIME'],unit='s')
+text_df['s_time'] = pa.to_datetime(text_df['s_time'], unit='s')
+# text_df['s_time'] = pa.to_timedelta(text_df['s_time'],unit='s')
 
 # 日期格式转换
 # 方法 1
-# text_df['SEND_TIME'] = text_df['SEND_TIME'].apply(lambda x : x.strftime('%Y-%m-%d'))
+# text_df['s_time'] = text_df['s_time'].apply(lambda x : x.strftime('%Y-%m-%d'))
 # 方法 2 参数 M 表示月份，Q 表示季度，A 表示年度，D 表示按天，这几个参数比较常用。
-text_df['test_time'] = text_df['SEND_TIME'].dt.to_period('D')
-text_df['test_price'] = text_df['FROM_UID'].astype(float)
+text_df['test_time'] = text_df['s_time'].dt.to_period('D')
+text_df['test_price'] = text_df['s_u'].astype(float)
 
-text_df['diff_date'] = pa.datetime.today() - text_df['SEND_TIME']
-text_df['diff_year'] = pa.datetime.today().year - text_df['SEND_TIME'].dt.year
+text_df['diff_date'] = pa.datetime.today() - text_df['s_time']
+text_df['diff_year'] = pa.datetime.today().year - text_df['s_time'].dt.year
 
 # apply
-text_df['total_price'] = text_df[['test_price', 'TO_UID']].apply(np.prod, axis=1)
+text_df['total_price'] = text_df[['test_price', 're_u']].apply(np.prod, axis=1)
 
 # groupby
 text_df_group = text_df.groupby(by='test_time').count()
