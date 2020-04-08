@@ -33,16 +33,16 @@ if __name__ == '__main__':
 	viewCount = 0
 	viewCount_csdn = 0
 
-	page_view_csdn()
-	while viewCount_csdn < 200:
-		count_csdn = count_csdn + 1
-		time_str = int(random())
-		viewCount_csdn = page_view_csdn()
-		time.sleep(time_str)
-		print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), count_csdn, time_str)
-		print(viewCount_csdn, count_csdn)
+	# page_view_csdn()
+	# while viewCount_csdn < 300:
+	# 	count_csdn = count_csdn + 1
+	# 	time_str = int(random())
+	# 	viewCount_csdn = page_view_csdn()
+	# 	time.sleep(time_str)
+	# 	print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), count_csdn, time_str)
+	# 	print(viewCount_csdn, count_csdn)
 
-	while viewCount < 218:
+	while viewCount < 404:
 		count = count + 1
 		time_str = int(random() * 10)
 		viewCount = page_view()
