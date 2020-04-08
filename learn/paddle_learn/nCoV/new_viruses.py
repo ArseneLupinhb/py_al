@@ -54,6 +54,5 @@ def crawl_statistics_data():
 
 
 if __name__ == '__main__':
-	# crawl_dxy_data()
-	# crawl_statistics_data()
-	test_page_view()
+	crawl_dxy_data()
+	crawl_statistics_data()
