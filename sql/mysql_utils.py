@@ -9,14 +9,6 @@ def get_conn():
 	return connect
 
 
-def get_conn_text_test():
-	# own connect
-	connect = pymysql.connect('127.0.0.1', 'root', 'root', 'td_oa')
-	if connect:
-		print("连接成功")
-	return connect
-
-
 def query_value(sql):
 	"""
 
