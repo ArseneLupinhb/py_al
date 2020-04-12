@@ -1,5 +1,7 @@
 import copy
 
+from utils import zip_utils as zu
+
 a = [1, 2, 3, 4, 5, ['a', 'b']]
 # 原始对象
 b = a  # 赋值，传对象的引用
@@ -48,3 +50,5 @@ print(s2, type(s2))
 
 s3 = s1.encode("utf-8")  # unicode 转成 utf-8，encode(编码)注明生成的编码格式
 print(s3, type(s3))
+
+zu.create_zip('test.txt', 'hello world')
