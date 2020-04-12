@@ -33,3 +33,18 @@ def progress(percent=0, width=30):
 for i in range(101):
     progress(i)
     sleep(0.1)
+
+a_list = 'avbs'
+a_list[-2:]
+
+# Python字符编码转换
+s = '匆匆'
+print(s)
+s1 = s.encode().decode("utf-8")  # utf-8 转成 Unicode，decode(解码)需要注明当前编码格式
+print(s1, type(s1))
+
+s2 = s1.encode("gbk")  # unicode 转成 gbk，encode(编码)需要注明生成的编码格式
+print(s2, type(s2))
+
+s3 = s1.encode("utf-8")  # unicode 转成 utf-8，encode(编码)注明生成的编码格式
+print(s3, type(s3))
