@@ -1,8 +1,10 @@
 *.jpg
+*.png
 
 
 #文件夹
 /data
+*.pdparams
 
 
 # IDE
