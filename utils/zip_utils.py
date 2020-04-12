@@ -26,6 +26,19 @@ def create_zip(filename, content):
 	print("压缩完成")
 
 
+def ungz(filename):
+	'''
+	解压gz文件
+	:param filename:
+	:return:文件的内容
+	'''
+	g = gzip.GzipFile(filename, 'rb')
+	content = g.read().decode()
+	return content
+
+
 if __name__ == '__main__':
 	os.getcwd()
-	create_zip(r'data/test.gz', 'content')
+	# create_zip(r'data/test.gz', 'content')
+	str1 = ungz(r'data/test.gz')
+	print(str1)
