@@ -16,7 +16,7 @@ text_df.info()
 text_df.head()
 text_df.shape
 text_df.count()
-temp_data = text_df.groupby('re_u').apply(lambda t: t[t.s_time == t.s_time.max()])
+temp_data = text_df.groupby('user_id').apply(lambda t: t[t.buy_time == t.buy_time.max()])
 temp_data.shape
 
 text_df.info()
