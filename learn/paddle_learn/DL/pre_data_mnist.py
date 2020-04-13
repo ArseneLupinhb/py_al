@@ -3,8 +3,11 @@ import gzip
 import json
 import random
 
+import matplotlib.image as mpimg
+import matplotlib.pyplot as plt
 import numpy as np
 import paddle.fluid as fluid
+from PIL import Image
 from paddle.fluid.dygraph.nn import Conv2D, Pool2D, Linear
 
 
@@ -151,6 +154,47 @@ def trian_model():
 		fluid.save_dygraph(model.state_dict(), 'mnist')
 
 
+# 读取一张本地的样例图片，转变成模型输入的格式
+def load_image(img_path):
+	# 从img_path中读取图像，并转为灰度图
+	im = Image.open(img_path).convert('L')
+	im.show()
+	im = im.resize((28, 28), Image.ANTIALIAS)
+	im = np.array(im).reshape(1, 1, 28, 28).astype(np.float32)
+	# 图像归一化
+	im = 1.0 - im / 255.
+	return im
+
+
+def eval_model():
+	# 定义预测过程
+	with fluid.dygraph.guard():
+		model = MNIST("mnist")
+		params_file_path = 'mnist'
+		img_path = r'work/example_0.png'
+		# 加载模型参数
+		model_dict, _ = fluid.load_dygraph("mnist")
+		model.load_dict(model_dict)
+
+		model.eval()
+		tensor_img = load_image(img_path)
+		# 模型反馈10个分类标签的对应概率
+		results = model(fluid.dygraph.to_variable(tensor_img))
+		# 取概率最大的标签作为预测输出
+		lab = np.argsort(results.numpy())
+		print(lab)
+		print("本次预测的数字是: ", lab[0][-1])
+
+
+def show_test_img():
+	example = mpimg.imread('work/example_0.png')
+	# 显示图像
+	plt.imshow(example)
+	plt.show()
+
+
 if __name__ == '__main__':
 	# load_data()
-	trian_model()
+	# trian_model()
+	# show_test_img()
+	eval_model()
