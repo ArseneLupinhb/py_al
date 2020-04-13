@@ -13,7 +13,7 @@ def unzip_data(src_path, target_path):
 		z.close()
 
 
-def create_zip(filename, content):
+def create_gz(filename, content):
 	'''
 	创建压缩文件
 	:param filename: 文件名
@@ -39,6 +39,6 @@ def ungz(filename):
 
 if __name__ == '__main__':
 	os.getcwd()
-	# create_zip(r'data/test.gz', 'content')
+	create_gz(r'data/test.gz', 'content')
 	str1 = ungz(r'data/test.gz')
 	print(str1)
