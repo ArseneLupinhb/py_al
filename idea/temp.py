@@ -25,16 +25,16 @@ from time import sleep
 
 
 def progress(percent=0, width=30):
-    left = width * percent // 100
-    right = width - left
-    print('\r[', '#' * left, ' ' * right, ']',
-          f' {percent:.0f}%',
-          sep='', end='', flush=True)
+	left = width * percent // 100
+	right = width - left
+	print('\r[', '#' * left, ' ' * right, ']',
+	      f' {percent:.0f}%',
+	      sep='', end='', flush=True)
 
 
 for i in range(101):
-    progress(i)
-    sleep(0.1)
+	progress(i)
+	sleep(0.1)
 
 a_list = 'avbs'
 a_list[-2:]
@@ -52,3 +52,19 @@ s3 = s1.encode("utf-8")  # unicode 转成 utf-8，encode(编码)注明生成的�
 print(s3, type(s3))
 
 zu.create_zip('test.txt', 'hello world')
+
+# sigmoid 函数作图
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+def sigmoid(x):
+	# 直接返回sigmoid函数
+	return 1. / (1. + np.exp(-x))
+
+
+# param:起点，终点，间距
+x = np.arange(-8, 8, 0.2)
+y = sigmoid(x)
+plt.plot(x, y)
+plt.show()
