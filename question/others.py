@@ -30,3 +30,14 @@ seasons = ['Spring', 'Summer', 'Fall', 'Winter']
 list(enumerate(seasons))
 for season_id, season in enumerate(seasons):
 	print(id, season)
+
+import numpy as np
+
+# ps：这里的num的绝对值小于等于x中元素的个数
+# 当num>=0时，np.argsort()[num]就可以理解为y[num];
+# 当num<0时，np.argsort()[num]就是把数组y的元素反向输出，例如np.argsort()[-1]即输出x中最大值对应的index，np.argsort()[-2]
+x = np.array([1, 4, 3, -1, 6, 9])
+print(x)
+# array([3, 0, 2, 1, 4, 5] 元素从小到大的索引
+# 取出最大值
+np.argsort(x)[-1]
