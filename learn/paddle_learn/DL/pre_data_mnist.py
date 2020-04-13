@@ -100,14 +100,20 @@ class MNIST(fluid.dygraph.Layer):
 		self.fc = Linear(input_dim=980, output_dim=10, act="softmax")
 
 	# 定义网络前向计算过程，卷积后紧接着使用池化层，最后使用全连接层计算最终输出
-	def forward(self, inputs):
+	def forward(self, inputs, label=None):
 		x = self.conv1(inputs)
 		x = self.pool1(x)
 		x = self.conv2(x)
 		x = self.pool2(x)
 		x = fluid.layers.reshape(x, [x.shape[0], -1])
 		x = self.fc(x)
-		return x
+		# 如果label不是None，则计算分类精度并返回
+		if label is not None:
+			# print(label)
+			acc = fluid.layers.accuracy(input=x, label=label)
+			return x, acc
+		else:
+			return x
 
 
 def trian_model():
@@ -132,7 +138,7 @@ def trian_model():
 				label = fluid.dygraph.to_variable(label_data)
 
 				# 前向计算的过程
-				predict = model(image)
+				predict, acc = model(image, label)
 
 				# 计算损失，取一个批次样本损失的平均值
 				# loss = fluid.layers.square_error_cost(predict, label)
@@ -143,7 +149,8 @@ def trian_model():
 
 				# 每训练了200批次的数据，打印下当前Loss的情况
 				if batch_id % 200 == 0:
-					print("epoch: {}, batch: {}, loss is: {}".format(epoch_id, batch_id, avg_loss.numpy()))
+					print("epoch: {}, batch: {}, loss is: {}, acc is {}".format(epoch_id, batch_id, avg_loss.numpy(),
+					                                                            acc.numpy()))
 
 				# 后向传播，更新参数的过程
 				avg_loss.backward()
@@ -158,7 +165,7 @@ def trian_model():
 def load_image(img_path):
 	# 从img_path中读取图像，并转为灰度图
 	im = Image.open(img_path).convert('L')
-	im.show()
+	# im.show()
 	im = im.resize((28, 28), Image.ANTIALIAS)
 	im = np.array(im).reshape(1, 1, 28, 28).astype(np.float32)
 	# 图像归一化
@@ -195,6 +202,6 @@ def show_test_img():
 
 if __name__ == '__main__':
 	# load_data()
-	# trian_model()
+	trian_model()
 	# show_test_img()
 	eval_model()
