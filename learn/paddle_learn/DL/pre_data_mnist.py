@@ -1,12 +1,14 @@
 # 数据处理部分之前的代码，加入部分数据处理的库
 import gzip
 import json
+import os
 import random
 
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import numpy as np
 import paddle.fluid as fluid
+import pandas as pd
 from PIL import Image
 from paddle.fluid.dygraph.nn import Conv2D, Pool2D, Linear
 
@@ -133,6 +135,7 @@ def trian_model():
 		iter = 0
 		iters = []
 		losses = []
+		accs = []
 		for epoch_id in range(EPOCH_NUM):
 			for batch_id, data in enumerate(data_loader):
 				# 准备数据，变得更加简洁
@@ -156,26 +159,28 @@ def trian_model():
 					                                                            acc.numpy()))
 					iters.append(iter)
 					losses.append(avg_loss.numpy())
+					accs.append(acc.numpy())
 					iter = iter + 100
-					show_loss(iters, losses)
+				# show_trianning(iters, accs)
 
 				# 后向传播，更新参数的过程
 				avg_loss.backward()
 				optimizer.minimize(avg_loss)
 				model.clear_gradients()
 
-		show_loss(iters, losses)
+		show_trianning(iters, losses)
+		show_trianning(iters, accs)
 
 		# 保存模型参数
 		fluid.save_dygraph(model.state_dict(), 'mnist')
 
 
-def show_loss(iters, losses):
+def show_trianning(iters, losses):
 	# 画出训练过程中Loss的变化曲线
 	plt.figure()
-	plt.title("train loss", fontsize=24)
+	plt.title("trainning", fontsize=24)
 	plt.xlabel("iter", fontsize=14)
-	plt.ylabel("loss", fontsize=14)
+	plt.ylabel("trainning", fontsize=14)
 	plt.plot(iters, losses, color='red', label='train loss')
 	plt.grid()
 	plt.show()
@@ -248,11 +253,31 @@ def test_model():
 		avg_loss_val_mean = np.array(avg_loss_set).mean()
 
 		print('loss={}, acc={}'.format(avg_loss_val_mean, acc_val_mean))
+		record_result(avg_loss_val_mean, acc_val_mean)
+
+
+def record_result(avg_loss_val_mean, acc_val_mean):
+	result_path = r'results.csv'
+	if not os.path.exists(result_path):
+		result = pd.DataFrame(columns=('loss', 'acc'))
+		row = {'loss': avg_loss_val_mean, 'acc': acc_val_mean}
+		result = result.append(row, ignore_index=True)
+		result.to_csv('results.csv')
+	else:
+		result = pd.read_csv(result_path)
+		row = {'loss': avg_loss_val_mean, 'acc': acc_val_mean}
+		result = result.append(row, ignore_index=True)
+		result.to_csv('results.csv')
+	print("record done")
 
 
 if __name__ == '__main__':
 	# load_data()
-	trian_model()
+	# trian_model()
 	# show_test_img()
 	# eval_model()
-	test_model()
+	# test_model()
+	for i in range(10):
+		trian_model()
+		# eval_model()
+		test_model()
