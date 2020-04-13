@@ -262,12 +262,13 @@ def record_result(avg_loss_val_mean, acc_val_mean):
 		result = pd.DataFrame(columns=('loss', 'acc'))
 		row = {'loss': avg_loss_val_mean, 'acc': acc_val_mean}
 		result = result.append(row, ignore_index=True)
-		result.to_csv('results.csv')
+		result.to_csv('results.csv', index=True)
 	else:
-		result = pd.read_csv(result_path)
+		result = pd.read_csv(result_path, index_col=[0])
 		row = {'loss': avg_loss_val_mean, 'acc': acc_val_mean}
 		result = result.append(row, ignore_index=True)
-		result.to_csv('results.csv')
+		os.remove(result_path)
+		result.to_csv('results.csv', index=True)
 	print("record done")
 
 
@@ -277,7 +278,7 @@ if __name__ == '__main__':
 	# show_test_img()
 	# eval_model()
 	# test_model()
-	for i in range(10):
+	for i in range(2):
 		trian_model()
 		# eval_model()
 		test_model()
