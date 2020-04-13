@@ -24,3 +24,9 @@ print(np.empty((2, 3)))  # 值取决于内存
 print(np.arange(0, 10, 2))  # 起点为0，不超过10，步长为2
 print(np.linspace(-1, 2, 5))  # 起点为-1，终点为2，取5个点
 print(np.random.randint(0, 3, (2, 3)))  # 大于等于0，小于3，2行3列的随机整数
+
+# enumerate
+seasons = ['Spring', 'Summer', 'Fall', 'Winter']
+list(enumerate(seasons))
+for season_id, season in enumerate(seasons):
+	print(id, season)
