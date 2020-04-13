@@ -31,7 +31,7 @@ def load_data(mode='train'):
 		imgs, labels = eval_set[0], eval_set[1]
 	else:
 		raise Exception("mode can only be one of ['train', 'valid', 'eval']")
-	print("训练数据集数量: ", len(imgs))
+	print("{}-数据集数量: {}".format(mode, len(imgs)))
 
 	# 校验数据
 	imgs_length = len(imgs)
@@ -130,6 +130,9 @@ def trian_model():
 
 		optimizer = fluid.optimizer.SGDOptimizer(learning_rate=0.001, parameter_list=model.parameters())
 		EPOCH_NUM = 10
+		iter = 0
+		iters = []
+		losses = []
 		for epoch_id in range(EPOCH_NUM):
 			for batch_id, data in enumerate(data_loader):
 				# 准备数据，变得更加简洁
@@ -151,14 +154,31 @@ def trian_model():
 				if batch_id % 200 == 0:
 					print("epoch: {}, batch: {}, loss is: {}, acc is {}".format(epoch_id, batch_id, avg_loss.numpy(),
 					                                                            acc.numpy()))
+					iters.append(iter)
+					losses.append(avg_loss.numpy())
+					iter = iter + 100
+					show_loss(iters, losses)
 
 				# 后向传播，更新参数的过程
 				avg_loss.backward()
 				optimizer.minimize(avg_loss)
 				model.clear_gradients()
 
+		show_loss(iters, losses)
+
 		# 保存模型参数
 		fluid.save_dygraph(model.state_dict(), 'mnist')
+
+
+def show_loss(iters, losses):
+	# 画出训练过程中Loss的变化曲线
+	plt.figure()
+	plt.title("train loss", fontsize=24)
+	plt.xlabel("iter", fontsize=14)
+	plt.ylabel("loss", fontsize=14)
+	plt.plot(iters, losses, color='red', label='train loss')
+	plt.grid()
+	plt.show()
 
 
 # 读取一张本地的样例图片，转变成模型输入的格式
@@ -200,8 +220,39 @@ def show_test_img():
 	plt.show()
 
 
+def test_model():
+	with fluid.dygraph.guard():
+		print('start evaluation .......')
+		# 加载模型参数
+		model = MNIST("mnist")
+		model_state_dict, _ = fluid.load_dygraph('mnist')
+		model.load_dict(model_state_dict)
+
+		model.eval()
+		eval_loader = load_data('eval')
+
+		acc_set = []
+		avg_loss_set = []
+		for batch_id, data in enumerate(eval_loader()):
+			x_data, y_data = data
+			img = fluid.dygraph.to_variable(x_data)
+			label = fluid.dygraph.to_variable(y_data)
+			prediction, acc = model(img, label)
+			loss = fluid.layers.cross_entropy(input=prediction, label=label)
+			avg_loss = fluid.layers.mean(loss)
+			acc_set.append(float(acc.numpy()))
+			avg_loss_set.append(float(avg_loss.numpy()))
+
+		# 计算多个batch的平均损失和准确率
+		acc_val_mean = np.array(acc_set).mean()
+		avg_loss_val_mean = np.array(avg_loss_set).mean()
+
+		print('loss={}, acc={}'.format(avg_loss_val_mean, acc_val_mean))
+
+
 if __name__ == '__main__':
 	# load_data()
 	trian_model()
 	# show_test_img()
-	eval_model()
+	# eval_model()
+	test_model()
