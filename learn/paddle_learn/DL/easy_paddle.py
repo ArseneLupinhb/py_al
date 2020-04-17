@@ -103,13 +103,23 @@ def show_test_img():
 	plt.show()
 
 
+def test_model():
+	pass
+
+
 # 通过with语句创建一个dygraph运行的context，
 # 动态图下的一些操作需要在guard下进行
 # 还是面向对象好
 if __name__ == '__main__':
+	# 训练模型
 	# train_model()
 	# 导入图像读取第三方库
 	# 读取图像
 	show_test_img()
+
 	# 只需要有pdparams 这个文件在就可以调用运行了
+	# 评估模型，并用于参数调优
 	eval_model()
+
+	# 测试模型
+	test_model()
