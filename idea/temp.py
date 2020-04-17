@@ -1,5 +1,7 @@
 import copy
 
+import pandas as pd
+
 from utils import zip_utils as zu
 
 a = [1, 2, 3, 4, 5, ['a', 'b']]
@@ -68,3 +70,8 @@ x = np.arange(-8, 8, 0.2)
 y = sigmoid(x)
 plt.plot(x, y)
 plt.show()
+
+res = pd.DataFrame(columns=('lib', 'qty1', 'qty2'))
+res = res.append([{'qty1': 10.0}], ignore_index=True)
+print(res.head())
+res.to_csv('result.csv')
