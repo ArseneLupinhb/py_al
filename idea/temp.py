@@ -75,3 +75,13 @@ res = pd.DataFrame(columns=('lib', 'qty1', 'qty2'))
 res = res.append([{'qty1': 10.0}], ignore_index=True)
 print(res.head())
 res.to_csv('result.csv')
+
+
+def raise_alarm(voice):
+	import winsound
+	# winsound.Beep(500, 1000)
+	winsound.MessageBeep(500)
+	winsound.MessageBeep(500)
+
+
+raise_alarm(voice="hello")
