@@ -77,6 +77,7 @@ print(res.head())
 res.to_csv('result.csv')
 
 
+# windows 发出声音
 def raise_alarm(voice):
 	import winsound
 	# winsound.Beep(500, 1000)
@@ -85,3 +86,106 @@ def raise_alarm(voice):
 
 
 raise_alarm(voice="hello")
+
+import plotly.express as px
+import matplotlib.pyplot as plt
+
+df = px.data.tips()
+fig = px.sunburst(df, path=['day', 'time', 'sex'], values='total_bill')
+fig.show()
+plt.show()
+
+import plotly.graph_objects as go
+import urllib, json
+
+url = 'https://raw.githubusercontent.com/plotly/plotly.js/master/test/image/mocks/sankey_energy.json'
+response = urllib.request.urlopen(url)
+data = json.loads(response.read())
+
+# override gray link colors with 'source' colors
+opacity = 0.4
+# change 'magenta' to its 'rgba' value to add opacity
+data['data'][0]['node']['color'] = ['rgba(255,0,255, 0.8)' if color == "magenta" else color for color in
+                                    data['data'][0]['node']['color']]
+data['data'][0]['link']['color'] = [data['data'][0]['node']['color'][src].replace("0.8", str(opacity))
+                                    for src in data['data'][0]['link']['source']]
+
+fig = go.Figure(data=[go.Sankey(
+	valueformat=".0f",
+	valuesuffix="TWh",
+	# Define nodes
+	node=dict(
+		pad=15,
+		thickness=15,
+		line=dict(color="black", width=0.5),
+		label=data['data'][0]['node']['label'],
+		color=data['data'][0]['node']['color']
+	),
+	# Add links
+	link=dict(
+		source=data['data'][0]['link']['source'],
+		target=data['data'][0]['link']['target'],
+		value=data['data'][0]['link']['value'],
+		label=data['data'][0]['link']['label'],
+		color=data['data'][0]['link']['color']
+	))])
+
+fig.update_layout(
+	title_text="Energy forecast for 2050<br>Source: Department of Energy & Climate Change, Tom Counsell via <a href='https://bost.ocks.org/mike/sankey/'>Mike Bostock</a>",
+	font_size=10)
+fig.show()
+
+import plotly.graph_objects as go
+
+categories = ['processing cost', 'mechanical properties', 'chemical stability',
+              'thermal stability', 'device integration']
+
+fig = go.Figure()
+
+fig.add_trace(go.Scatterpolar(
+	r=[1, 5, 2, 2, 3],
+	theta=categories,
+	fill='toself',
+	name='Product A'
+))
+fig.add_trace(go.Scatterpolar(
+	r=[4, 3, 2.5, 1, 2],
+	theta=categories,
+	fill='toself',
+	name='Product B'
+))
+
+fig.update_layout(
+	polar=dict(
+		radialaxis=dict(
+			visible=True,
+			range=[0, 5]
+		)),
+	showlegend=False
+)
+
+fig.show()
+
+# python 列表表达式
+l1 = [i for i in range(1, 101)]
+print(l1)
+
+print([i for i in range(0, 11)])
+print([i * 2 for i in range(0, 11)])
+
+# step = 2 输出0 100 的所有的偶数
+print([i for i in range(0, 101, 2)])
+# 通过添加if判断条件 输出偶数
+print([i for i in range(0, 101) if i % 2 == 0])
+
+print([i for i in range(0, 101) if i > 4])
+
+print([f'python---{i}' for i in range(1, 101)])
+l1 = ['太白金星', 'fdsaf', 'alex', 'sb', 'ab']
+l2 = [i.upper() for i in l1 if len(i) > 3]
+print(l2)
+
+names = [['Tom', 'Billy', 'Jefferson', 'Andrew', 'Wesley', 'Steven', 'Joe'],
+         ['Alice', 'Jill', 'Ana', 'Wendy', 'Jennifer', 'Sherry', 'Eva']]
+# 第一个是最外层
+print([j for i in names for j in i if j.count('e') >= 2])
