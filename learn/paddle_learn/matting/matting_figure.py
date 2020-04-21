@@ -33,6 +33,7 @@ def matting_image():
 	plt.imshow(img)
 	plt.axis('off')
 	plt.show()
+	print("done")
 
 
 if __name__ == '__main__':
