@@ -1,8 +1,12 @@
 import copy
+import os
 
 import pandas as pd
 
 from utils import zip_utils as zu
+
+os.getcwd()
+source_path = os.getcwd() + r'/idea/work/'
 
 a = [1, 2, 3, 4, 5, ['a', 'b']]
 # 原始对象
@@ -189,3 +193,16 @@ names = [['Tom', 'Billy', 'Jefferson', 'Andrew', 'Wesley', 'Steven', 'Joe'],
          ['Alice', 'Jill', 'Ana', 'Wendy', 'Jennifer', 'Sherry', 'Eva']]
 # 第一个是最外层
 print([j for i in names for j in i if j.count('e') >= 2])
+
+for i in range(1, 10):
+	for j in range(1, i + 1):
+		print('{}x{}={}\t'.format(j, i, i * j), end='')
+	print()
+
+a = 255
+b = 255
+a is b
+
+c = 257
+d = 257
+c is d
