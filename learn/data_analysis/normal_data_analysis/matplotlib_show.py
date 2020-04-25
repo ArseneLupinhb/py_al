@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-import numpy as  np
+import numpy as np
 import pandas as pa
 
 # 中文乱码
@@ -75,4 +75,25 @@ plt.title(u'散点图示例')
 plt.xlabel('x-value')
 plt.ylabel('y-label')
 plt.scatter(xValue, yValue, s=20, c="#ff1212", marker='o')
+plt.show()
+
+# 生成数据
+x = np.linspace(-1, 1, 50)  # 等差数列
+y1 = 2 * x + 1
+y2 = x ** 2
+
+# 画两个线
+plt.figure(figsize=(7, 5))
+plt.plot(x, y1, color='red', linewidth=1)
+plt.plot(x, y2, color='blue', linewidth=5)
+plt.xlabel('x', fontsize=20)
+plt.ylabel('y', fontsize=20)
+plt.show()
+
+# bar加上数据标识
+x = np.arange(10)
+y = 2 ** x + 10
+plt.bar(x, y, facecolor='#9999ff', edgecolor='white')
+for ax, ay in zip(x, y):
+    plt.text(ax, ay, '%.1f' % ay, ha='center', va='bottom')
 plt.show()
