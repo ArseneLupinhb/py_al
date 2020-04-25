@@ -190,12 +190,12 @@ class MovieLen(object):
 				# 如果读取的数据量达到当前的batch大小，就返回当前批次
 				if len(usr_id_list) == BATCHSIZE:
 					# 转换列表数据为数组形式，reshape到固定形状
-					usr_id_arr = np.array(usr_id_list)
-					usr_gender_arr = np.array(usr_gender_list)
-					usr_age_arr = np.array(usr_age_list)
-					usr_job_arr = np.array(usr_job_list)
+					usr_id_arr = np.array(usr_id_list).astype(np.int64)
+					usr_gender_arr = np.array(usr_gender_list).astype(np.int64)
+					usr_age_arr = np.array(usr_age_list).astype(np.int64)
+					usr_job_arr = np.array(usr_job_list).astype(np.int64)
 
-					mov_id_arr = np.array(mov_id_list)
+					mov_id_arr = np.array(mov_id_list).astype(np.int64).astype(np.int64)
 					mov_cat_arr = np.reshape(np.array(mov_cat_list), [BATCHSIZE, 6]).astype(np.int64)
 					mov_tit_arr = np.reshape(np.array(mov_tit_list), [BATCHSIZE, 1, 15]).astype(np.int64)
 
@@ -386,9 +386,13 @@ def train(model):
 			for idx, data in enumerate(data_loader()):
 				# 获得数据，并转为动态图格式
 				usr, mov, score = data
+				usr[0] = usr[0].astype(np.int64)
+				mov[0] = mov[0].astype(np.int64)
+
 				usr_v = [dygraph.to_variable(var) for var in usr]
 				mov_v = [dygraph.to_variable(var) for var in mov]
 				scores_label = dygraph.to_variable(score)
+
 				# 计算出算法的前向计算结果
 				_, _, scores_predict = model.forward(usr_v, mov_v)
 				# 计算loss
