@@ -264,3 +264,14 @@ class Student(Person):  # 定义子类
 s = Student()  # 实例化子类
 s.study()  # 调用子类的方法
 s.eat()  # 调用父类方法
+
+temp_df = pd.DataFrame(columns=('a', 'b'))
+temp_df
+row = {'a': 2, 'b': 3}
+temp_df = temp_df.append(row, ignore_index=True)
+temp_df.head()
+
+from sqlalchemy import create_engine
+
+local_conn = create_engine('mysql+pymysql://root:root@localhost:3306/test?charset=utf8')
+temp_df.to_sql("test1", local_conn, if_exists='append', index=False)
