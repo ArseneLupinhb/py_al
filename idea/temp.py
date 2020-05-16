@@ -275,3 +275,19 @@ from sqlalchemy import create_engine
 
 local_conn = create_engine('mysql+pymysql://root:root@localhost:3306/test?charset=utf8')
 temp_df.to_sql("test1", local_conn, if_exists='append', index=False)
+
+ts = pd.read_csv(r'D:\soft_own\source\py_al\idea\work\ts_df.csv')
+ts.info()
+ts.head()
+ts['high'].coor(ts['low'])
+
+trade = ts['trade']
+open = ts['open']
+trade.cov(open)
+corr = ts['trade'].corr(ts['open'])
+print(corr)
+
+text_df = pd.read_csv(r'C:\Users\AL\Desktop\test\text\text_data.csv')
+text_df.info()
+corr = text_df['FROM_UID'].corr(text_df['TO_UID'])
+print(corr)
