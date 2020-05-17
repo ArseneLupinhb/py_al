@@ -2,6 +2,7 @@ import os
 
 import matplotlib
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import tushare as ts
 
@@ -12,12 +13,12 @@ os.getcwd()
 source_path = os.getcwd() + r'/idea/work/'
 
 # 一次性获取最近一个日交易日所有股票的交易数据
-ts_df = ts.get_today_all()
+# ts_df = ts.get_today_all()
 # 新闻数据
 new_df = ts.get_notices()
 
 # 保存数据到csv
-ts_df.to_csv(source_path + r'ts_df.csv', encoding='utf_8_sig')
+# ts_df.to_csv(source_path + r'ts_df.csv', encoding='utf_8_sig')
 # new_df.to_csv(source_path + r'new_df.csv', encoding='utf_8_sig')
 
 # 从csv读取数据
@@ -25,7 +26,7 @@ ts_df = pd.read_csv(source_path + r'ts_df.csv')
 
 ts_df.info()
 ts_df.head()
-ts_df.shape()
+ts_df.shape
 # 使用 utf_8_sig 可以解决中文乱码问题
 
 (ts_df['trade'] - ts_df['open']) / ts_df['open'] * 100
@@ -53,3 +54,9 @@ temp_df['changepercent_per'] = temp_df['changepercent'] / 100
 temp_df[['changepercent', 'trade']][:40].plot.bar()
 temp_df[['changepercent']][:40].plot()
 plt.show()
+
+temp_df = ts_df.pivot_table(index=['name', 'code'], values=['changepercent'], aggfunc=[np.mean])
+df11 = pd.DataFrame(temp_df)
+
+ts_df.info()
+ts_df.pivot(index='code', columns='changepercent')
