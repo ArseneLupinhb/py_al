@@ -70,11 +70,28 @@ if __name__ == '__main__':
     bar = (
         Bar(init_opts=opts.InitOpts(theme=ThemeType.CHALK))
             .add_xaxis(["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"])
-            .add_yaxis("商家A", [5, 20, 36, 10, 75, 90], is_smooth=True)
-            .add_yaxis("商家B", [15, 6, 45, 20, 35, 66], is_smooth=True)
+            .add_yaxis("商家A", [5, 20, 36, 10, 75, 90])
+            .add_yaxis("商家B", [15, 6, 45, 20, 35, 66])
             .set_global_opts(title_opts=opts.TitleOpts(title="主标题", subtitle="副标题"))
     )
     bar.render()
+
+    lin = (
+        Line(init_opts=opts.InitOpts(theme=ThemeType.CHALK))
+            .add_xaxis(["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"])
+            .add_yaxis("商家A", [5, 20, 36, 10, 75, 90], is_smooth=True)
+            .add_yaxis("商家B", [15, 6, 45, 20, 35, 66], is_smooth=True)
+            .set_global_opts(title_opts=opts.TitleOpts(title="主标题", subtitle="副标题"),
+                             xaxis_opts=opts.AxisOpts(name='日期'),
+                             yaxis_opts=opts.AxisOpts(name='数量', max_=16000, min_=1, type_="log",  # 坐标轴配置项
+                                                      splitline_opts=opts.SplitLineOpts(is_show=True),  # 分割线配置项
+                                                      axisline_opts=opts.AxisLineOpts(is_show=True))
+                             )
+
+    )
+    lin.render()
+    lin.overlap(bar)
+    lin.render()
 
     get_line()
 
@@ -83,3 +100,14 @@ if __name__ == '__main__':
     map = Map("世界地图示例")
     map.add("", attr, value, maptype="world", is_visualmap=True, visual_text_color='#000')
     map.render('Map-World.html')
+
+    bar = Bar()
+    bar.add_xaxis(["1月1日", "1月2日"])
+    bar.add_yaxis("类别1", [33, 34])
+    bar.add_yaxis("类别2", [40, 42])
+    line = Line()
+    line.add_xaxis(["1月1日", "1月2日"])
+    line.add_yaxis("类别1", [22, 24])
+    line.add_yaxis("类别2", [30, 33])
+    line.overlap(bar)
+    line.render()
