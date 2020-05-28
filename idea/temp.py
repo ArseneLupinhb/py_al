@@ -31,16 +31,16 @@ from time import sleep
 
 
 def progress(percent=0, width=30):
-    left = width * percent // 100
-    right = width - left
-    print('\r[', '#' * left, ' ' * right, ']',
-          f' {percent:.0f}%',
-          sep='', end='', flush=True)
+	left = width * percent // 100
+	right = width - left
+	print('\r[', '#' * left, ' ' * right, ']',
+	      f' {percent:.0f}%',
+	      sep='', end='', flush=True)
 
 
 for i in range(101):
-    progress(i)
-    sleep(0.1)
+	progress(i)
+	sleep(0.1)
 
 a_list = 'avbs'
 a_list[-2:]
@@ -65,8 +65,8 @@ import matplotlib.pyplot as plt
 
 
 def sigmoid(x):
-    # 直接返回sigmoid函数
-    return 1. / (1. + np.exp(-x))
+	# 直接返回sigmoid函数
+	return 1. / (1. + np.exp(-x))
 
 
 # param:起点，终点，间距
@@ -83,10 +83,10 @@ res.to_csv('result.csv')
 
 # windows 发出声音
 def raise_alarm(voice):
-    import winsound
-    # winsound.Beep(500, 1000)
-    winsound.MessageBeep(500)
-    winsound.MessageBeep(500)
+	import winsound
+	# winsound.Beep(500, 1000)
+	winsound.MessageBeep(500)
+	winsound.MessageBeep(500)
 
 
 raise_alarm(voice="hello")
@@ -115,28 +115,28 @@ data['data'][0]['link']['color'] = [data['data'][0]['node']['color'][src].replac
                                     for src in data['data'][0]['link']['source']]
 
 fig = go.Figure(data=[go.Sankey(
-    valueformat=".0f",
-    valuesuffix="TWh",
-    # Define nodes
-    node=dict(
-        pad=15,
-        thickness=15,
-        line=dict(color="black", width=0.5),
-        label=data['data'][0]['node']['label'],
-        color=data['data'][0]['node']['color']
-    ),
-    # Add links
-    link=dict(
-        source=data['data'][0]['link']['source'],
-        target=data['data'][0]['link']['target'],
-        value=data['data'][0]['link']['value'],
-        label=data['data'][0]['link']['label'],
-        color=data['data'][0]['link']['color']
-    ))])
+	valueformat=".0f",
+	valuesuffix="TWh",
+	# Define nodes
+	node=dict(
+		pad=15,
+		thickness=15,
+		line=dict(color="black", width=0.5),
+		label=data['data'][0]['node']['label'],
+		color=data['data'][0]['node']['color']
+	),
+	# Add links
+	link=dict(
+		source=data['data'][0]['link']['source'],
+		target=data['data'][0]['link']['target'],
+		value=data['data'][0]['link']['value'],
+		label=data['data'][0]['link']['label'],
+		color=data['data'][0]['link']['color']
+	))])
 
 fig.update_layout(
-    title_text="Energy forecast for 2050<br>Source: Department of Energy & Climate Change, Tom Counsell via <a href='https://bost.ocks.org/mike/sankey/'>Mike Bostock</a>",
-    font_size=10)
+	title_text="Energy forecast for 2050<br>Source: Department of Energy & Climate Change, Tom Counsell via <a href='https://bost.ocks.org/mike/sankey/'>Mike Bostock</a>",
+	font_size=10)
 fig.show()
 
 import plotly.graph_objects as go
@@ -147,25 +147,25 @@ categories = ['processing cost', 'mechanical properties', 'chemical stability',
 fig = go.Figure()
 
 fig.add_trace(go.Scatterpolar(
-    r=[1, 5, 2, 2, 3],
-    theta=categories,
-    fill='toself',
-    name='Product A'
+	r=[1, 5, 2, 2, 3],
+	theta=categories,
+	fill='toself',
+	name='Product A'
 ))
 fig.add_trace(go.Scatterpolar(
-    r=[4, 3, 2.5, 1, 2],
-    theta=categories,
-    fill='toself',
-    name='Product B'
+	r=[4, 3, 2.5, 1, 2],
+	theta=categories,
+	fill='toself',
+	name='Product B'
 ))
 
 fig.update_layout(
-    polar=dict(
-        radialaxis=dict(
-            visible=True,
-            range=[0, 5]
-        )),
-    showlegend=False
+	polar=dict(
+		radialaxis=dict(
+			visible=True,
+			range=[0, 5]
+		)),
+	showlegend=False
 )
 
 fig.show()
@@ -195,9 +195,9 @@ names = [['Tom', 'Billy', 'Jefferson', 'Andrew', 'Wesley', 'Steven', 'Joe'],
 print([j for i in names for j in i if j.count('e') >= 2])
 
 for i in range(1, 10):
-    for j in range(1, i + 1):
-        print('{}x{}={}\t'.format(j, i, i * j), end='')
-    print()
+	for j in range(1, i + 1):
+		print('{}x{}={}\t'.format(j, i, i * j), end='')
+	print()
 
 a = 255
 b = 255
@@ -227,15 +227,15 @@ sorted(animals)
 
 class Animal:
 
-    def __init__(self, name):
-        self.name = name
-        print('动物名称实例化')
+	def __init__(self, name):
+		self.name = name
+		print('动物名称实例化')
 
-    def eat(self):
-        print(self.name + '要吃东西啦！')
+	def eat(self):
+		print(self.name + '要吃东西啦！')
 
-    def drink(self):
-        print(self.name + '要喝水啦！')
+	def drink(self):
+		print(self.name + '要喝水啦！')
 
 
 cat = Animal('miaomiao')
@@ -245,20 +245,20 @@ cat.drink()
 
 
 class Person:
-    def __init__(self, name):
-        self.name = name
-        print('调用父类构造函数')
+	def __init__(self, name):
+		self.name = name
+		print('调用父类构造函数')
 
-    def eat(self):
-        print('调用父类方法')
+	def eat(self):
+		print('调用父类方法')
 
 
 class Student(Person):  # 定义子类
-    def __init__(self):
-        print('调用子类构造方法')
+	def __init__(self):
+		print('调用子类构造方法')
 
-    def study(self):
-        print('调用子类方法')
+	def study(self):
+		print('调用子类方法')
 
 
 s = Student()  # 实例化子类
@@ -291,3 +291,27 @@ text_df = pd.read_csv(r'C:\Users\AL\Desktop\test\text\text_data.csv')
 text_df.info()
 corr = text_df['FROM_UID'].corr(text_df['TO_UID'])
 print(corr)
+
+
+def get_yeild():
+	for i in range(10):
+		yield i
+
+
+def fab(max):
+	n, a, b = 0, 0, 1
+	while n < max:
+		yield b  # 使用 yield
+		# print b
+		a, b = b, a + b
+		n = n + 1
+
+
+if __name__ == '__main__':
+	b = []
+	for i in get_yeild():
+		b.append(i)
+	print(b)
+
+	for n in fab(5):
+		print(n)
