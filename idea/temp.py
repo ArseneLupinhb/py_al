@@ -2,6 +2,7 @@ import copy
 import os
 
 import pandas as pd
+import qrcode
 
 from utils import zip_utils as zu
 
@@ -315,3 +316,5 @@ if __name__ == '__main__':
 
 	for n in fab(5):
 		print(n)
+	os.chdir(r'D:\soft_own\source\py_al\idea\work')
+	qrcode.make("www.foofish.net").save("test.png")
