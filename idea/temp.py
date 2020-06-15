@@ -318,3 +318,52 @@ if __name__ == '__main__':
 		print(n)
 	os.chdir(r'D:\soft_own\source\py_al\idea\work')
 	qrcode.make("www.foofish.net").save("test.png")
+# 对字典排序
+# 声明字典
+key_value = {}
+
+# 初始化
+key_value[2] = 56
+key_value[1] = 2
+key_value[5] = 12
+key_value[4] = 24
+key_value[6] = 18
+key_value[3] = 323
+
+# sorted(key_value) 返回一个迭代器
+# 字典按键排序
+for i in sorted(key_value):
+	print((i, key_value[i]), end=" ")
+
+print(sorted(key_value.keys(), reverse=True))
+print(sorted(key_value.items(), key=lambda kv: (kv[1], kv[0])))
+
+lis = [{"name": "Taobao", "age": 100},
+       {"name": "Runoob", "age": 7},
+       {"name": "Google", "age": 100},
+       {"name": "Wiki", "age": 200}]
+
+# 通过 age 升序排序
+print("列表通过 age 升序排序: ")
+print(sorted(lis, key=lambda i: i['age']))
+
+print("\r")
+
+# 先按 age 排序，再按 name 排序
+print("列表通过 age 和 name 排序: ")
+print(sorted(lis, key=lambda i: (i['age'], i['name'])))
+
+print("\r")
+
+# 按 age 降序排序
+print("列表通过 age 降序排序: ")
+print(sorted(lis, key=lambda i: i['age'], reverse=True))
+
+d = {'a': 1, 'b': 4, 'c': 2, 'f': 12}
+
+# 第一种方法，key使用lambda匿名函数取value进行排序
+a = sorted(d.items(), key=lambda x: x[1])
+a1 = sorted(d.items(), key=lambda x: x[1], reverse=True)
+
+# key使用lambda匿名函数按键进行排序
+a2 = sorted(d.items(), key=lambda x: x[0])
